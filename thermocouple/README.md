@@ -32,9 +32,11 @@ You should see the response:
 
 
 ## Install MAX31856 Library
+https://learn.adafruit.com/adafruit-max31856-thermocouple-amplifier/python-circuitpython
      sudo pip3 install adafruit-circuitpython-max31856
 
 ## Example Code
-![image](https://user-images.githubusercontent.com/43687571/121631190-729d8200-ca33-11eb-91de-f461a88c3bbd.png)
+![image](https://user-images.githubusercontent.com/43687571/121639462-6b7d7080-ca41-11eb-9d65-6648cda9c668.png)
+
 
 Note the different model number used
