@@ -27,7 +27,8 @@ You should see the response:
 
 ## Connect the MAX 31856 to Pi
 
-![image](https://user-images.githubusercontent.com/43687571/121630905-e723f100-ca32-11eb-86f0-2bd269bfe128.png)
+![image](https://user-images.githubusercontent.com/43687571/121639226-13466e80-ca41-11eb-91f3-908dcdfe75c6.png)
+
 
 
 ## Install MAX31856 Library
