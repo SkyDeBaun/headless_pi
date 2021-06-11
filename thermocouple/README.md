@@ -1,4 +1,7 @@
 # Setup MAX31856
+https://learn.adafruit.com/thermocouple/python-circuitpython  
+
+
 ## Update Pi
      sudo apt-get update
      sudo apt-get upgrade
@@ -22,3 +25,7 @@ You should see the response:
 ## Connect the MAX 31856 to Pi
 
 ![image](https://user-images.githubusercontent.com/43687571/121630905-e723f100-ca32-11eb-86f0-2bd269bfe128.png)
+
+
+## Install MAX31856 Library
+     sudo pip3 install adafruit-circuitpython-max31855
