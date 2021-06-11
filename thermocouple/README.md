@@ -28,4 +28,9 @@ You should see the response:
 
 
 ## Install MAX31856 Library
-     sudo pip3 install adafruit-circuitpython-max31855
+     sudo pip3 install adafruit-circuitpython-max31856
+
+## Example Code
+![image](https://user-images.githubusercontent.com/43687571/121631190-729d8200-ca33-11eb-91de-f461a88c3bbd.png)
+
+Note the different model number used
