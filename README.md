@@ -3,8 +3,8 @@
 * I like Balena Etcher for this
 
 ### Add supplicant.conf and ssh to the microSD card
-* Create supplicant.conf (see example)
-* Create empty ssh file 
+* Create supplicant.conf (see provided example)
+* Create empty ssh file (no file extension)
   * touch ssh (Linux)
   * copy NUL ssh (Windows)
 
