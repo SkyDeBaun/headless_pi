@@ -8,7 +8,7 @@ https://learn.adafruit.com/thermocouple/python-circuitpython
      sudo apt-get install python3-pip
      sudo pip3 install --upgrade setuptools
 
-## Install Adafruit components
+## Install Adafruit components (enable SPI 0 and I2C. See link to enable SPI 1)
 https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi  
 
      cd ~
