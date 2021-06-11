@@ -18,3 +18,14 @@ Login and change the password
 * default user pi
 * default pass raspberry
 * change password with: passwd
+
+
+     ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+     country=US
+     update_config=1
+
+     network={
+     ssid="your_sid"
+     psk="your_password"
+     key_mgmt=WPA-PSK
+     }
