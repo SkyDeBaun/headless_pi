@@ -5,7 +5,9 @@
 
 Add the following to the microSD card
 * add supplicant.conf (see example)
-* add empty ssh file (ie touch ssh)
+* add empty ssh file 
+  * touch ssh (Linux)
+  * copy NUL ssh (Windows)
 
 
 Scan network for new ip
