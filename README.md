@@ -19,7 +19,7 @@
 * Default pass: raspberry
 * Change password with: passwd
 
-### Connect VS Code Remotely
+## Connect VS Code Remotely
 Unfortunately Pi Zero does not support this feature due to low system memory
 
 For a work around use sshfs to remotely mount the zero's file system
