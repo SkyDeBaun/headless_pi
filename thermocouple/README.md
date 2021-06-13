@@ -38,7 +38,7 @@ https://learn.adafruit.com/adafruit-max31856-thermocouple-amplifier/python-circu
 ## Example Code
 ![image](https://user-images.githubusercontent.com/43687571/121639462-6b7d7080-ca41-11eb-9d65-6648cda9c668.png)
 
-and with a loop and temperature conversion
+and with a loop and temperature conversion (example from MAX31855)
 ![image](https://user-images.githubusercontent.com/43687571/121640533-e85d1a00-ca42-11eb-8771-c59a804dee29.png)
 
 
