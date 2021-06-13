@@ -1,5 +1,4 @@
-#pyrometer with LED display
-
+import os
 
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
@@ -27,11 +26,11 @@ thermocouple = adafruit_max31856.MAX31856(spi, cs)
 
 #my vars-------------------------------------------------
 display_heading = "T E M P E R A T U R E (F)"
-my_font = "unispace.ttf" #in local directory
+my_font = "unispace.ttf"
 
 
 #configuration for LED screen----------------------------
-RST = None     # on the Pi OLED this pin isnt used
+RST = None     # on the PiOLED this pin isnt used
 # Note the following are only used with SPI:
 DC = 23
 SPI_PORT = 0
@@ -84,20 +83,27 @@ while True:
 
     #get updated temperature------------------------------------
     tempC = thermocouple.temperature
-    tempF = tempC * 9 / 5 + 32 #convert to Fahrenheit
-    tempF = str(format(tempF, '.1f'))  #format and convert to string
+    tempF = tempC * 9 / 5 + 32
+    tempString = str(format(tempF, '.1f'))  #format and convert to string
+
+    #test MQTT pub-----------------------------------------------
+    if tempF > 150:
+        os.system("mosquitto_pub -h localhost -t \"test\" -m \"hello\"")
+
+
 
     #get updated string(temp) size
     headingwidth, headingheight = heading_font.getsize(display_heading)
-    textwidth, textheight = font.getsize(tempF)
+    textwidth, textheight = font.getsize(tempString)
 
-    #calculate offset as sting grows to multiple digits (keeps it centered as digits increase/decrease)
+
+    #calculate offset as sting grows to multiple digits
     offset = (width - textwidth)/2
     heading_offset = (width - headingwidth)/2
 
     #update text-------------------------------------------------
     draw.text((heading_offset,top+2), display_heading, font=heading_font, fill=255)
-    draw.text((offset,top+12), tempF, font=font, fill=255)
+    draw.text((offset,top+12), tempString, font=font, fill=255)
 
 
     #print to screen---------------------------------------------
