@@ -33,9 +33,6 @@ def print_temperature(thermocouple, position):
     tempF = tempC * 9 / 5 + 32
     tempString = str(format(tempF, '.1f'))  #format and convert to string
 
-    #print to console for remote monitoring--------------------- PRINT TO CONSOLE
-    #print("Temperature " + position + ": " + tempString)
-  
     #get updated string(temp) size------------------------------
     headingwidth, headingheight = heading_font.getsize(display_heading)
     textwidth, textheight = font.getsize(tempString)
@@ -47,7 +44,6 @@ def print_temperature(thermocouple, position):
     #update text------------------------------------------------
     draw.text((heading_offset,top+2), display_heading, font=heading_font, fill=255)
     draw.text((offset,top+12), tempString, font=font, fill=255)
-    #draw.text((0,top+12), "Hi", font=heading_font, fill=255)
 
     if position == "Hi":
         draw.text((0,top+14), "Hi", font=heading_font, fill=255)
@@ -59,6 +55,7 @@ def print_temperature(thermocouple, position):
     disp.display()
 
     return tempString
+
 
 
 #---------------------------------------------------------------------- SETUP
@@ -116,13 +113,9 @@ top = padding
 bottom = height-padding
 x = 0 #horizontal offset (from left)
 
-# default font
-#font = ImageFont.load_default()
-
 #create fonts for display--------------------------------
 heading_font = ImageFont.truetype(my_font, 8)
 font = ImageFont.truetype(my_font, 24)
-
 
 
 
