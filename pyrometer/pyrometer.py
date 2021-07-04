@@ -1,4 +1,5 @@
 import os
+from vcgencmd import Vcgencmd #monitor cpu temp (and other stuff..)
 
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
@@ -13,20 +14,72 @@ import board
 import digitalio
 import adafruit_max31856
 
+
+
+
+def print_temperature(thermocouple, position):
+    # Draw a black filled box to clear the image.
+    draw.rectangle((0,0,width,height), outline=0, fill=0)
+
+    #get updated temperature------------------------------------
+    tempC = thermocouple.temperature
+    tempF = tempC * 9 / 5 + 32
+    tempString = str(format(tempF, '.1f'))  #format and convert to string
+  
+
+    #get updated string(temp) size
+    headingwidth, headingheight = heading_font.getsize(display_heading)
+    textwidth, textheight = font.getsize(tempString)
+
+    #calculate offset as sting grows to multiple digits
+    offset = (width - textwidth)/2
+    heading_offset = (width - headingwidth)/2
+
+    #update text-------------------------------------------------
+    draw.text((heading_offset,top+2), display_heading, font=heading_font, fill=255)
+    draw.text((offset,top+12), tempString, font=font, fill=255)
+    #draw.text((0,top+12), "Hi", font=heading_font, fill=255)
+
+    if position == "Hi":
+        draw.text((0,top+12), "Hi", font=heading_font, fill=255)
+    else:
+        draw.text((0,top+24), "Lo", font=heading_font, fill=255)
+
+    #print to screen---------------------------------------------
+    disp.image(image) #not just for "images!" (i.e. leave this..)
+    disp.display()
+
+    return tempString
+
+
+
+
 # Create sensor object, communicating over the board's default SPI bus
 spi = board.SPI()
 
 # allocate a CS pin and set the direction
+
 cs = digitalio.DigitalInOut(board.D5)
 cs.direction = digitalio.Direction.OUTPUT
 
+cs2 = digitalio.DigitalInOut(board.D6)
+cs2.direction = digitalio.Direction.OUTPUT
+
+
 # create a thermocouple object with the above
 thermocouple = adafruit_max31856.MAX31856(spi, cs)
+thermocouple2 = adafruit_max31856.MAX31856(spi, cs2)
 
 
 #my vars-------------------------------------------------
 display_heading = "T E M P E R A T U R E (F)"
 my_font = "unispace.ttf"
+
+
+#test MQTT self subscribe--------------------------------
+os.system("mosquitto_sub -h localhost -t \"thermocouple\" &") #run MQTT subscription service in background
+
+
 
 
 #configuration for LED screen----------------------------
@@ -74,39 +127,46 @@ heading_font = ImageFont.truetype(my_font, 8)
 font = ImageFont.truetype(my_font, 24)
 
 
+counter = 0
+
+
+vcgm = Vcgencmd()
+
+
+
 #loop---------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 while True:
 
-    # Draw a black filled box to clear the image.
-    draw.rectangle((0,0,width,height), outline=0, fill=0)
 
-    #get updated temperature------------------------------------
-    tempC = thermocouple.temperature
-    tempF = tempC * 9 / 5 + 32
-    tempString = str(format(tempF, '.1f'))  #format and convert to string
+    tempString = print_temperature(thermocouple, "Lo")   
+    time.sleep(1)   
+    tempString2 = print_temperature(thermocouple2, "Hi")   
+
 
     #test MQTT pub-----------------------------------------------
-    if tempF > 150:
-        os.system("mosquitto_pub -h localhost -t \"test\" -m \"hello\"")
+    if counter == 0:         
+        #construct string----------------------------------------
+        #os.system("mosquitto_pub -h localhost -t \"test\" -m \"hello\"")
+        thermo_lo = "mosquitto_pub -h localhost -t \"thermo_low\" -m " + str(tempString)
+        thermo_hi = "mosquitto_pub -h localhost -t \"thermo_high\" -m " + str(tempString2)
 
+        #cpu temperature monitoring------------------------------
+        cpu = vcgm.measure_temp()
+        cpu_temp = "mosquitto_pub -h localhost -t \"cpu_temp\" -m " + str(cpu)
 
+        os.system(thermo_lo)
+        os.system(thermo_hi) 
+        os.system(cpu_temp)
 
-    #get updated string(temp) size
-    headingwidth, headingheight = heading_font.getsize(display_heading)
-    textwidth, textheight = font.getsize(tempString)
-
-
-    #calculate offset as sting grows to multiple digits
-    offset = (width - textwidth)/2
-    heading_offset = (width - headingwidth)/2
-
-    #update text-------------------------------------------------
-    draw.text((heading_offset,top+2), display_heading, font=heading_font, fill=255)
-    draw.text((offset,top+12), tempString, font=font, fill=255)
-
-
-    #print to screen---------------------------------------------
-    disp.image(image)
-    disp.display()
     time.sleep(1)
+
+    
+    #reset counter every 5 seconds
+    '''
+    if counter >= 4:
+        counter = 0
+    else:
+        counter += 1
+    '''
+
