@@ -1,21 +1,29 @@
-import os
-#from vcgencmd import Vcgencmd #monitor cpu temp (and other stuff..)
+#Kiln monitoring using two MAX 31856 thermocouple amplifiers and Mosquito MQTT
+#Skywalker, July 2021
 
+
+#system commands--------------------------
+import os
+import time
+
+#GPIO-------------------------------------
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_SSD1306
 
+#Max 31856 amplifier----------------------
+import board
+import digitalio
+import adafruit_max31856
+
+#OLED screen-------------------------------
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
 
-import time
-import board
-import digitalio
-import adafruit_max31856
 
-
-#functions--------------------------------------------------------------
+#functions-------------------------------------------------------------- FUNCTIONS
+#-----------------------------------------------------------------------
 def print_temperature(thermocouple, position):
     # Draw a black filled box to clear the image.
     draw.rectangle((0,0,width,height), outline=0, fill=0)
@@ -25,8 +33,8 @@ def print_temperature(thermocouple, position):
     tempF = tempC * 9 / 5 + 32
     tempString = str(format(tempF, '.1f'))  #format and convert to string
 
-    #print to console for remote monitoring---------------------
-    print("Temperature " + position + ": " + tempString)
+    #print to console for remote monitoring--------------------- PRINT TO CONSOLE
+    #print("Temperature " + position + ": " + tempString)
   
     #get updated string(temp) size------------------------------
     headingwidth, headingheight = heading_font.getsize(display_heading)
@@ -46,14 +54,14 @@ def print_temperature(thermocouple, position):
     else:
         draw.text((0,top+26), "Lo", font=heading_font, fill=255)
 
-    #print to screen--------------------------------------------
+    #print to OLED-------------------------------------------- PRINT TO OLED
     disp.image(image) #not just for "images!" (i.e. leave this..)
     disp.display()
 
     return tempString
 
 
-#----------------------------------------------------------------------
+#---------------------------------------------------------------------- SETUP
 #----------------------------------------------------------------------
 
 # Create sensor object, communicating over the board's default SPI bus
@@ -90,7 +98,6 @@ disp.begin()
 disp.clear()
 disp.display()
 
-
 #create blank image for drawing-------------------------
 # Make sure to create image with mode '1' for 1-bit color.
 width = disp.width
@@ -119,49 +126,23 @@ font = ImageFont.truetype(my_font, 24)
 
 
 
-#start MQTT self subscribe-------------------------------- (i.e. sub/pub on one node)
+#start MQTT (self subcribe for one node pub/sub)-------------------------------- START MQTT
 os.system("mosquitto_sub -h localhost -t \"thermocouple\" &") #run MQTT subscription service in background
 
 
-counter = 0 #for variable delays (not currently used)
 
-#monitoring object (seems to be causing crashes after ~15 minutes)
-#vcgm = Vcgencmd()
-
-
-
-#loop---------------------------------------------------------------------------
+#loop--------------------------------------------------------------------------- 
+#------------------------------------------------------------------------------- LOOP
 #-------------------------------------------------------------------------------
+
 while True:
 
-    tempString = print_temperature(thermocouple, "Lo")   
-    time.sleep(1.5)   
-    tempString2 = print_temperature(thermocouple2, "Hi")   
+    tempString = print_temperature(thermocouple, "Lo")
+    thermo_lo = "mosquitto_pub -h localhost -t \"thermo_low\" -m " + str(tempString) #publish message
+    os.system(thermo_lo)
     time.sleep(1.5)
 
-    #test MQTT pub-----------------------------------------------
-    if counter == 0:         
-        #construct string----------------------------------------
-        #os.system("mosquitto_pub -h localhost -t \"test\" -m \"hello\"")
-        thermo_lo = "mosquitto_pub -h localhost -t \"thermo_low\" -m " + str(tempString)
-        thermo_hi = "mosquitto_pub -h localhost -t \"thermo_high\" -m " + str(tempString2)
-
-        #cpu temperature monitoring------------------------------
-        #cpu = vcgm.measure_temp()
-        #cpu_temp = "mosquitto_pub -h localhost -t \"cpu_temp\" -m " + str(cpu)
-
-        os.system(thermo_lo)
-        os.system(thermo_hi) 
-        #os.system(cpu_temp)
-
-    #time.sleep(1)
-
-    
-    #reset counter every 5 seconds
-    '''
-    if counter >= 4:
-        counter = 0
-    else:
-        counter += 1
-    '''
-
+    tempString2 = print_temperature(thermocouple2, "Hi")
+    thermo_hi = "mosquitto_pub -h localhost -t \"thermo_high\" -m " + str(tempString2) #publish message
+    os.system(thermo_hi) 
+    time.sleep(1.5)
