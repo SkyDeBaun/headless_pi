@@ -19,3 +19,8 @@
 * Default pass: raspberry
 * Change password with: passwd
 
+-------------------------------------------------------------  
+##UPDATE
+Was unable to login using default password using the above method.  
+
+Instead I used the Raspberry Pi Imager program: allows configuring username, password, wifi -> super easy  
