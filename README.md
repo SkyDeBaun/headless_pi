@@ -24,3 +24,6 @@
 Was unable to login using default password using the above method.  
 
 Instead I used the Raspberry Pi Imager program: allows configuring username, password, wifi -> super easy  
+https://www.raspberrypi.com/news/raspberry-pi-bullseye-update-april-2022/
+
+![image](https://github.com/SkyDeBaun/headless_pi/assets/43687571/85374c00-5224-414b-91e9-f7dfebf183f8)
