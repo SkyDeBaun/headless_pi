@@ -37,3 +37,18 @@ To generate the encrypted password, the easiest way is to use OpenSSL on a Raspb
 
 echo 'mypassword' | openssl passwd -6 -stdin
 This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.
+
+
+
+-----------------------------------------------------------------  
+## Open terminal and enter:  
+wpa_passphrase YOUR_SSID YOUR_PASSWORD  
+
+Output:  
+network={  
+    ssid="YOUR_SSID"  
+    #psk="YOUR_PASSWORD"  
+    psk=6a24edf1592aec4465271b7dcd204601b6e78df3186ce1a62a31f40ae9630702  
+}  
+
+https://unix.stackexchange.com/questions/278946/hiding-passwords-in-wpa-supplicant-conf-with-wpa-eap-and-mschap-v2
