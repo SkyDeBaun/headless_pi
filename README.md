@@ -35,13 +35,9 @@ This file should contain a single line of text, consisting of username:encrypted
 
 To generate the encrypted password, the easiest way is to use OpenSSL on a Raspberry Pi that is already running – open a terminal window and enter
 
-echo 'mypassword' | openssl passwd -6 -stdin
-This will produce what looks like a string of random characters, which is actually an encrypted version of the supplied password.
-
-
 
 -----------------------------------------------------------------  
-## Open terminal and enter:  
+### Open terminal and enter:  
 wpa_passphrase YOUR_SSID YOUR_PASSWORD  
 
 Output:  
