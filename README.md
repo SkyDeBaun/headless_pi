@@ -48,3 +48,7 @@ network={
 }  
 
 https://unix.stackexchange.com/questions/278946/hiding-passwords-in-wpa-supplicant-conf-with-wpa-eap-and-mschap-v2
+
+
+### Changing Wifi Password with Headless Pi  
+add new wpa_supplicant.conf to boot directory of Pi (i.e. on micro SD card) and restart
