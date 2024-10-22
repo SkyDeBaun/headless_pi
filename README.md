@@ -48,6 +48,7 @@ network={
 }  
 
 ##### Then copy the psk line to your wpa_supplicant.conf
+(See the provided wpa_supplicant.conf example)
 
 https://unix.stackexchange.com/questions/278946/hiding-passwords-in-wpa-supplicant-conf-with-wpa-eap-and-mschap-v2
 
