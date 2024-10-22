@@ -38,7 +38,7 @@ To generate the encrypted password, the easiest way is to use OpenSSL on a Raspb
 
 -----------------------------------------------------------------  
 ### Open terminal and enter:  
-wpa_passphrase YOUR_SSID YOUR_PASSWORD  
+wpa_passphrase <YOUR_SSID> <YOUR_PASSWORD>  
 
 Output:  
 network={  
@@ -46,6 +46,8 @@ network={
     #psk="YOUR_PASSWORD"  
     psk=6a24edf1592aec4465271b7dcd204601b6e78df3186ce1a62a31f40ae9630702  
 }  
+
+##### Then copy the psk line to your wpa_supplicant.conf
 
 https://unix.stackexchange.com/questions/278946/hiding-passwords-in-wpa-supplicant-conf-with-wpa-eap-and-mschap-v2
 
