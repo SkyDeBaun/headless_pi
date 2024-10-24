@@ -45,6 +45,11 @@ Attempting to setup the image such that on first boot ssh is enabled and the Pi 
     - sudo make install
 
 
+## BPSec Requirements
+For general logging and to enable the python regression test the following environmental variable must be set
+- ION_RUN_EXPERT="yes"
+- On Linux (bash) use: export ION_RUN_EXPERT="yes"
+- On Solaris (tcsh) use: setenv ION_RUN_EXPERT "yes"
 
 
 ## Install ION
