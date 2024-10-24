@@ -1,0 +1,21 @@
+# Pi 4 Notes
+
+
+### When building ION (after MBEDTLS config and install) on Raspian on Pi 4 I see this error:
+
+/usr/bin/ld: ./.libs/libici.so: undefined reference to `mbedtls_nist_kw_init'
+/usr/bin/ld: ./.libs/libici.so: undefined reference to `mbedtls_nist_kw_wrap'
+/usr/bin/ld: ./.libs/libici.so: undefined reference to `mbedtls_nist_kw_unwrap'
+/usr/bin/ld: ./.libs/libici.so: undefined reference to `mbedtls_nist_kw_free'
+/usr/bin/ld: ./.libs/libici.so: undefined reference to `mbedtls_nist_kw_setkey'
+collect2: error: ld returned 1 exit status
+make[2]: *** [Makefile:8815: file2sdr] Error 1
+
+
+
+
+## Solution (must export LD_LIBRARY_PATH)
+I don't usually need to explicitly do this (exception being the DSN Solaris machines)
+
+
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
